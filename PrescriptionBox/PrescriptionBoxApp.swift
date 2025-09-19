@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct PrescriptionBoxApp: App {
-    private let keychainHandler = KeychainHandler()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

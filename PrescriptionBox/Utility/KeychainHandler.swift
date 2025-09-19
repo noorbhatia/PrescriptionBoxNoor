@@ -36,9 +36,11 @@ enum KeychainValues {
 
 
 final class KeychainHandler {
+
     
     private let queue = DispatchQueue(label: "keychain.access", attributes: .concurrent)
-
+    private init (){}
+    static let shared = KeychainHandler()
     func getValue(_ for: KeychainValues) -> String? {
         return queue.sync {
             let query: [String: Any] = [

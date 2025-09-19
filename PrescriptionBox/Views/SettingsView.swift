@@ -2,8 +2,8 @@ import SwiftUI
 
 struct SettingsView: View {
     @State private var key: String = ""
-    @State private var saveStatus: String = ""
-    private let keychainHandler = KeychainHandler()
+    
+    
     
     var body: some View {
         NavigationStack {
@@ -23,11 +23,7 @@ struct SettingsView: View {
                             saveAPIKey()
                         }
 
-                    if !saveStatus.isEmpty {
-                        Text(saveStatus)
-                            .foregroundColor(saveStatus.contains("saved") ? .green : .red)
-                            .font(.caption)
-                    }
+                   
                 }
                 Section("About") {
                     HStack {
@@ -46,24 +42,25 @@ struct SettingsView: View {
     }
 
     private func loadExistingAPIKey() {
+        let keychainHandler = KeychainHandler.shared
         if let existingKey = keychainHandler.getValue(.openAIKey) {
             key = existingKey
         }
     }
 
     private func saveAPIKey() {
+        let keychainHandler = KeychainHandler.shared
+
         guard !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            saveStatus = "Please enter a valid API key"
+            
             return
         }
 
         if keychainHandler.setValue(key, for: .openAIKey) {
-            saveStatus = "API key saved successfully"
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                saveStatus = ""
-            }
+            
+        
         } else {
-            saveStatus = "Failed to save API key"
+            debugPrint("Failed to save key")
         }
     }
 }
